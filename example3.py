@@ -1,3 +1,11 @@
+"""
+Repository: https://github.com/itssme/python_curses_examples
+Desc: If the user presses 'ENTER' the Option window will be checked.
+Author: https://github.com/itssme
+"""
+
+# TODO: make a menu with options
+
 import curses
 
 
@@ -24,18 +32,25 @@ def teardown(stdscr):
 
 class Option:
 
-    def __init__(self, parent_window, nlines, ncols, begin_y, begin_x, text=""):
+    def __init__(self, parent_window, nlines, ncols, begin_y, begin_x, title="", text=""):
         self.window = parent_window.subwin(nlines, ncols, begin_y, begin_x)
         self.MAX_X, self.MAX_Y = self.window.getmaxyx()
-        self.window.border()
-        self.checkbox = self.window.subwin(1, 1, 1, 1)
-        self.__fit_text(str(self.MAX_Y))
+        self.title = title
+        self.__fit_text(text)
 
-    def __fit_text(self, text):
-        self.window.addstr(self.MAX_X/2, self.MAX_Y-len(text) - 1, text)
+    def __fit_text(self, text, mode=None):
+        self.window.erase()
+        self.window.border()
+        self.window.addstr(0, 1, self.title)
+        if mode is None:
+            self.window.addstr(self.MAX_X/2, self.MAX_Y-len(text) - 1, text)
+        else:
+            self.window.addstr(self.MAX_X/2, self.MAX_Y-len(text) - 1, text, mode)
+        self.text = text
 
     def check(self):
-        pass
+        self.window.erase()
+        self.__fit_text(self.text, curses.A_REVERSE)
 
 
 def main():
@@ -46,14 +61,15 @@ def main():
     MAX_X, MAX_Y = stdscr.getmaxyx()
 
     main_window = curses.newwin(MAX_X, MAX_Y, 0, 0)
-    main_window.keypad(1)
 
-    main_window.border()
-    main_window.subwin(10, 10, 10, 10).subwin(1, 1, 1, 1).border()
-    #option_1 = Option(main_window, 3, 20, MAX_X/2, MAX_Y/2, "hallo")
+    option_1 = Option(main_window, 3, 20, MAX_X/2, MAX_Y/2, title="hello window", text="hello")
 
-    main_window.getch()
+    option_1.window.getch()
 
+    option_1.check()
+    main_window.refresh()
+
+    option_1.window.getch()
     teardown(stdscr)
 
 

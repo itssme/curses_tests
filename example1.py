@@ -1,3 +1,9 @@
+"""
+Repository: https://github.com/itssme/python_curses_examples
+Desc: Waits for the user to type in 10 Characters and then displays them on the screen.
+Author: https://github.com/itssme
+"""
+
 import curses
 
 

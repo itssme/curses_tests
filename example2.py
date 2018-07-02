@@ -1,4 +1,12 @@
+"""
+Repository: https://github.com/itssme/python_curses_examples
+Desc: Lets the user move a character around in the terminal.
+      if called with '--draw' the user can draw characters in the terminal.
+Author: https://github.com/itssme
+"""
+
 import curses
+from sys import argv
 
 
 def setup():
@@ -52,7 +60,8 @@ def main():
         if player[0] in [0, MAX_X] or player[1] in [0, MAX_Y]:
             alive = False
         else:
-            main_window.erase()
+            if "--draw" not in argv:
+                main_window.erase()
             main_window.addch(player[0], player[1], draw_letter)
 
     teardown(stdscr)
