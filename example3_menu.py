@@ -6,6 +6,7 @@ Author: https://github.com/itssme
 """
 
 import curses
+from time import sleep, time
 
 
 def setup():
@@ -31,7 +32,7 @@ def teardown(stdscr):
 
 class Menu:
     def __init__(self, parent_window, begin_y, begin_x, options, title=""):
-        nlines = len(options) + 4
+        nlines = len(options) + 3
         ncols = len(options[0][0])
         for i in range(1, len(options)):
             ncols = len(options[i][0]) if ncols <= len(options[i][0]) else ncols
@@ -47,13 +48,14 @@ class Menu:
 
         self.options = []
         for i in range(0, len(options)):
-            self.options.append(self.__Option(self.window, options[i][0], i + 2, 1, ncols, options[0][1]))
+            self.options.append(self.__Option(self.window, options[i][0], i + 2, 1, ncols, options[i][1]))
 
         self.window.border()
         if self.title != "":
             self.window.addstr(0, 1, " {} ".format(self.title))
 
         self.option_index = 0
+        self.__last_blink = 0
 
     def up(self):
         self.option_index -= 1 if self.option_index - 1 >= 0 else 0
@@ -85,10 +87,12 @@ class Menu:
                     self.window.border()
 
     def blink(self):
-        self.options[self.option_index].blink()
-        self.window.border()
-        if self.title != "":
-            self.window.addstr(0, 1, " {} ".format(self.title))
+        if time() - self.__last_blink > 0.2:
+            self.options[self.option_index].blink()
+            self.window.border()
+            if self.title != "":
+                self.window.addstr(0, 1, " {} ".format(self.title))
+            self.__last_blink = time()
 
     def refresh(self):
         self.window.refresh()
@@ -148,8 +152,12 @@ class Menu:
             self.fit_text(self.text)
 
 
-def example_callback():
-    print("example")
+def example_callback1():
+    print("one")
+
+
+def example_callback2():
+    print("two")
 
 
 def main():
@@ -161,7 +169,7 @@ def main():
     main_window.keypad(1)
     main_window.timeout(100)
 
-    menu = Menu(main_window, 1, 1, [("one1", example_callback), ("two2", example_callback)], "Menu")
+    menu = Menu(main_window, 1, 1, [("one1", example_callback1), ("two2", example_callback2)], "Menu")
     menu.refresh()
     key = -1
 
