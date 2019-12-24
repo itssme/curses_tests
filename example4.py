@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # Author: https://stackoverflow.com/questions/14200721/how-to-create-a-menu-and-submenus-in-python-curses
 
 import curses
@@ -49,7 +48,6 @@ class Menu(object):
                     break
                 else:
                     self.items[self.position][1]()
-
             elif key == curses.KEY_UP:
                 self.navigate(-1)
 

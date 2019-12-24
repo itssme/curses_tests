@@ -51,9 +51,9 @@ def main():
     ]
     alive = True
     snake = [
-        (MAX_X / 2, MAX_Y / 2),
-        (MAX_X / 2, (MAX_Y / 2) - 1),
-        (MAX_X / 2, (MAX_Y / 2) - 2)
+        (MAX_X // 2, MAX_Y // 2),
+        (MAX_X // 2, (MAX_Y // 2) - 1),
+        (MAX_X // 2, (MAX_Y // 2) - 2)
     ]
     food = new_food(snake, MAX_X, MAX_Y)
     main_window.addch(food[0], food[1], curses.ACS_DIAMOND)
@@ -113,19 +113,19 @@ def main():
         time.sleep(random.randint(1, 200) / 600.0)
 
     score_str = "Your Score is: " + str(score)
-    end_win_len = MAX_Y/6
+    end_win_len = MAX_Y // 6
     if end_win_len < len(score_str):
         end_win_len += (len(score_str)-(end_win_len)) + 2
-    end_win_height = MAX_X/6
+    end_win_height = MAX_X // 6
     if end_win_height < 3:
         end_win_height = 3
     end_screen = main_window.subwin(end_win_height, end_win_len,
-                                    (MAX_X/2) - end_win_height / 2,(MAX_Y / 2) - end_win_len / 2)
+                                    (MAX_X // 2) - end_win_height // 2,(MAX_Y // 2) - end_win_len // 2)
     end_screen.erase()
     MAX_X_END, MAX_Y_END = end_screen.getmaxyx()
     end_screen.border()
     end_screen.addstr(0, 1, "Game Over")
-    end_screen.addstr(MAX_X_END/2, (MAX_Y_END/2)-len(score_str)/2, score_str)
+    end_screen.addstr(MAX_X_END // 2, (MAX_Y_END // 2) - len(score_str) // 2, score_str)
     end_screen.getch()
 
     teardown()

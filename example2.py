@@ -37,7 +37,7 @@ def main():
     main_window = curses.newwin(MAX_X, MAX_Y, 0, 0)
     main_window.keypad(1)
 
-    player = [MAX_X/2, MAX_Y/2]
+    player = [MAX_X//2, MAX_Y//2]
     alive = True
 
     draw_letter = "+"
